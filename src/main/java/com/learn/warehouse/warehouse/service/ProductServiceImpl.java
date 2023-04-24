@@ -4,9 +4,12 @@ import com.learn.warehouse.warehouse.entity.Product;
 import com.learn.warehouse.warehouse.entity.ProductType;
 import com.learn.warehouse.warehouse.repo.ProductRepo;
 import com.learn.warehouse.warehouse.service.dto.AddProductRequest;
+import com.learn.warehouse.warehouse.service.dto.ProductResponse;
 import com.learn.warehouse.warehouse.service.exception.WarehouseException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,6 +54,21 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public List<ProductResponse> getProductsByType(String type) {
+        List<ProductResponse> productResponses = new ArrayList<>();
+        try {
+            List<Product> products = productRepo.getProductsByType(ProductType.valueOf(type));
+            for (Product product : products) {
+                productResponses.add(mapProductToProductResponse(product));
+            }
+        } catch (IllegalArgumentException ex) {
+            throw new WarehouseException(String.format("Product type[%s] is not available", type));
+        }
+
+        return productResponses;
+    }
+
     private Product mapProductToAddRequest(AddProductRequest addProductRequest) {
         Product product = new Product();
         product.setName(addProductRequest.getName());
@@ -63,5 +81,16 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(addProductRequest.getPrice());
         product.setQuantity(addProductRequest.getQuantity());
         return product;
+    }
+
+    private ProductResponse mapProductToProductResponse(Product product) {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setDescription(product.getDescription());
+        productResponse.setPrice(product.getPrice());
+        productResponse.setType(product.getType().name());
+        productResponse.setQuantity(product.getQuantity());
+        return productResponse;
     }
 }

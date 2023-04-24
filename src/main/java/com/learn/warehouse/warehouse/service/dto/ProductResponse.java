@@ -1,6 +1,5 @@
 package com.learn.warehouse.warehouse.service.dto;
 
-import com.learn.warehouse.warehouse.entity.ProductType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +8,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 
-public class UpdateRequest {
+public class ProductResponse {
     private Long id;
-    private  int quantity;
+    private String name;
+    private String description;
+    private String type;
+    private int price;
+    private int quantity;
 }

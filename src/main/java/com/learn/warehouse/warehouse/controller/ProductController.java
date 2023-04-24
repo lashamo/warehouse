@@ -2,7 +2,10 @@ package com.learn.warehouse.warehouse.controller;
 
 import com.learn.warehouse.warehouse.service.ProductService;
 import com.learn.warehouse.warehouse.service.dto.AddProductRequest;
+import com.learn.warehouse.warehouse.service.dto.ProductResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -25,5 +28,10 @@ public class ProductController {
     @PutMapping("/decrease-product-quantity")
     public  void  decreaseQuantity(@RequestParam Long id, @RequestParam int quantity){
         productService.decreaseQuantity(id, quantity);
+    }
+
+    @GetMapping("/get-products-by-type")
+    public List<ProductResponse> getProductsByType(@RequestParam String type){
+        return productService.getProductsByType(type);
     }
 }
