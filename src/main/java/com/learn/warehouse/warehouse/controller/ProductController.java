@@ -26,12 +26,12 @@ public class ProductController {
     }
 
     @PutMapping("/decrease-product-quantity")
-    public  void  decreaseQuantity(@RequestParam Long id, @RequestParam int quantity){
+    public void decreaseQuantity(@RequestParam Long id, @RequestParam int quantity) {
         productService.decreaseQuantity(id, quantity);
     }
 
     @GetMapping("/get-products-by-type")
-    public List<ProductResponse> getProductsByType(@RequestParam String type){
-        return productService.getProductsByType(type);
+    public List<ProductResponse> getProductsByType(@RequestParam String type, @RequestParam int page, @RequestParam int offset) {
+        return productService.getProductsByType(type, page, offset);
     }
 }

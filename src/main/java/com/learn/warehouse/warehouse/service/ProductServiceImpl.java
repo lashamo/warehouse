@@ -6,6 +6,8 @@ import com.learn.warehouse.warehouse.repo.ProductRepo;
 import com.learn.warehouse.warehouse.service.dto.AddProductRequest;
 import com.learn.warehouse.warehouse.service.dto.ProductResponse;
 import com.learn.warehouse.warehouse.service.exception.WarehouseException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,11 +57,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getProductsByType(String type) {
+    public List<ProductResponse> getProductsByType(String type, int page, int offset) {
+        Pageable pageable = PageRequest.of(page - 1, offset);
+
+
         List<ProductResponse> productResponses = new ArrayList<>();
         try {
-            List<Product> products = productRepo.getProductsByType(ProductType.valueOf(type));
-            for (Product product : products) {
+            List<Product> products = productRepo.getProductsByType(ProductType.valueOf(type), pageable);
+            for (Product product : products){
                 productResponses.add(mapProductToProductResponse(product));
             }
         } catch (IllegalArgumentException ex) {
